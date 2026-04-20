@@ -18,5 +18,5 @@ class AuthUser(Base):
     name = Column(String, unique= True)
     password = Column(String)
     role = Column(String, default= "user")
-
+    permissions = Column(String)
 

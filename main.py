@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 # from pydantic import BaseModel
 # from typing import Optional
 # import psycopg2
@@ -109,5 +109,7 @@ app= FastAPI()
 app.include_router(user_router, prefix="/api")
 
 @app.get("/protected")
-def protected(user: dict = Depends(get_current_user)):
-    return {"message": f"Hello {user.get('role')} {user['username']}"}
+def protected(user = Depends(get_current_user)):
+    return {"message": f"Hello {user.role} {user.name}"}
+
+

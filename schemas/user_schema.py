@@ -16,3 +16,6 @@ class AuthSchema(BaseModel):
     name: str
     password: str
     role: Optional[str]=None
+
+class RefreshRequest(BaseModel):
+    token: str
