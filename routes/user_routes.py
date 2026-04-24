@@ -10,6 +10,7 @@ from utils.token import create_access_token, create_refresh_token
 from dependencies.check_admin import require_role
 from dependencies.jwt_token import create_new_access_token
 from dependencies.permissions import require_permission
+from dependencies.rate_limiting import rate_limit_dependency, rate_limit_dependency_unauth
 
 router = APIRouter()
 
@@ -50,7 +51,7 @@ def signup(auth : AuthSchema, db: Session = Depends(get_db)):
     return {"message": "auth user saved"}
 
 @router.post("/login")
-def login(auth: AuthSchema, db: Session = Depends(get_db)):
+def login(auth: AuthSchema, db: Session = Depends(get_db), _:None = Depends(rate_limit_dependency_unauth(5,60))):
     db_user = db.query(AuthUser).filter(AuthUser.name == auth.name).first()
 
     if not db_user:
